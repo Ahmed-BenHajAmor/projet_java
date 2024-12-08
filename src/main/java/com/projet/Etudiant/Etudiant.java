@@ -11,7 +11,7 @@ import com.projet.Utilisateur.Utilisateur;
 import com.projet.communicationBD.communicationBD;
 
 public class Etudiant extends Utilisateur {
-    Vector<Formation> listFormation;
+    Vector<Formation> listFormation = new Vector<Formation>();
 
     public Etudiant(String nom, String email, String motDePasse) throws SQLException{
         super(nom, email, motDePasse);
@@ -32,23 +32,23 @@ public class Etudiant extends Utilisateur {
     public void sinscrireFormation(Formation formation) throws SQLException{
 
         try {
-            if (listFormation.contains(formation)){
+            if (formation == null || listFormation.contains(formation)){
                 throw new FormationDejaInscriteException();
             }
             listFormation.add(formation);
             int idEtud;
             int idFormation;
             int formateurId;
-            ResultSet res = ConnectionBD.st.executeQuery("select user_id from utilisateur where email = "+formation.getFormateur().email);
+            ResultSet res = ConnectionBD.st.executeQuery("select id_user from utilisateur where email = '"+formation.getFormateur().email+"'");
             res.next();
-            formateurId = res.getInt("user_id");
-            res = ConnectionBD.st.executeQuery("select id_formation from formation where titre = "+formation.getTitre()+" description = "+formation.getDescription()+" formateur_id = "+formateurId);
+            formateurId = res.getInt("id_user");
+            res = ConnectionBD.st.executeQuery("select id_formation from formation where titre = '"+formation.getTitre()+"' and discription = '"+formation.getDescription()+"' and formateur_id = '"+formateurId+"'");
             res.next();
             idFormation = res.getInt("id_formation");
-            res = ConnectionBD.st.executeQuery("select id_user from utlisateur where email = "+this.email);
+            res = ConnectionBD.st.executeQuery("select id_user from utilisateur where email = '"+this.email+"'");
             res.next();
-            idEtud = res.getInt("user_id");
-            int changesNumber = communicationBD.insert("assite", new String[]{"id_etudiant", "id_formation"}, new Object[]{idEtud, idFormation});
+            idEtud = res.getInt("id_user");
+            int changesNumber = communicationBD.insert("assiste", new String[]{"id_etudiant", "id_formation"}, new Object[]{idEtud, idFormation});
             if(changesNumber > 0){
                 System.out.println("eutiant inscri");
             }else{

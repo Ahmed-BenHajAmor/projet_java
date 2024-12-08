@@ -23,7 +23,7 @@ public class Formateur extends Utilisateur {
         else System.out.println("probleme lors du l ajout de l formateur a la table formateur");
 
     }
-    void ajouterFormation(Formation formation){
+    public void ajouterFormation(Formation formation){
         formations.add(formation);
     }
 }

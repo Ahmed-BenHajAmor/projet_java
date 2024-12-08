@@ -1,6 +1,5 @@
 package com.projet.Formation;
 
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -43,17 +42,14 @@ public class Formation {
         this.formateur = formateur;
         this.prix = prix;
 
-        PreparedStatement pst = ConnectionBD.con.prepareStatement("insert into formation (titre, description, formateur) values(?,?,?)");
-        pst.setString(1, titre);
-        pst.setString(2, description);
-
+        formateur.ajouterFormation(this);
         int formateurID;
-        ResultSet res = ConnectionBD.st.executeQuery("select * from utilisateur where email = "+formateur.email);
+        ResultSet res = ConnectionBD.st.executeQuery("select * from utilisateur where email = '"+formateur.email+"'");
         res.next();
-        formateurID = res.getInt("user_id");
+        formateurID = res.getInt("id_user");
 
-        int changesNumber = communicationBD.insert("formation", new String[]{"titre", "description", "formateur"}, new Object[]{titre, description, formateurID});
-        if(changesNumber < 0){
+        int changesNumber = communicationBD.insert("formation", new String[]{"titre", "discription", "formateur_id"}, new Object[]{titre, description, formateurID});
+        if(changesNumber > 0){
             System.out.println("formation added succefully");
         }else{
             System.out.println("formation ajout erreur");
