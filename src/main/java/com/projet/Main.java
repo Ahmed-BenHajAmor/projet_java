@@ -15,8 +15,6 @@ public class Main {
         Etudiant et = new Etudiant("ahdsdqqqqqqded", "qsdsqda@da.com", "12dfsd3");
         Formation f = new Formation("fff","aaa", e, 1.1);
         et.sinscrireFormation(f);
-        ConnectionBD.con.close();
-        ConnectionBD.st.close();
-
+        ConnectionBD.close();
     }
 }

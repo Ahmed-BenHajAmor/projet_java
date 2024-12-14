@@ -31,7 +31,6 @@ public class communicationBD {
             } else if (value instanceof Double) {
                 pst.setDouble(i + 1, (Double) value);
             }
-            
         }
         int changesNumber = pst.executeUpdate();
         return changesNumber;

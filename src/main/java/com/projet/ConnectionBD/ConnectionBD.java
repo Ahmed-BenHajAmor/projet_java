@@ -14,8 +14,9 @@ public class ConnectionBD {
         Class.forName("com.mysql.cj.jdbc.Driver");
         con = DriverManager.getConnection(url, "root", "Promysql001/");
         st = con.createStatement();
-        
-        ResultSet res = st.executeQuery("select * from utilisateur");
     }
-    
+    public static void close() throws SQLException{
+        st.close();
+        con.close();
+    }
 }
