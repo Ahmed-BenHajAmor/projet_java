@@ -30,20 +30,26 @@ public class Utilisateur {
         this.motDePasse = motDePasse;
     }
     public Utilisateur(String nom,String email,String motDePasse) throws SQLException{
-        ResultSet res = ConnectionBD.st.executeQuery("select id_user from utilisateur where email = '"+email+"' and mot_De_Passe = '"+motDePasse+"'");
+        ResultSet res = ConnectionBD.st.executeQuery("select * from utilisateur where email = '"+email+"'");
         try {
             if (!res.next()) {
+                setNom(nom);
+                setEmail(email);
+                setMotDePasse(motDePasse);
+        
+                int changesNumber = communicationBD.insert("utilisateur", new String[]{"nom", "email", "mot_de_passe"}, new String[]{nom, email, motDePasse});
+                if(changesNumber > 0){
+                    System.out.println("utilisateur ajouter a la table utilisateur");
+                }
+                else System.out.println("probleme lors du l ajout de l utilisateur a la table utilisateur");
+            }else if(res.getString("mot_de_passe") == motDePasse){
+                setNom(nom);
+                setEmail(email);
+                setMotDePasse(motDePasse);
+            }else{
                 throw new UtilisateurNonTrouveException();
             }
-            setNom(nom);
-            setEmail(email);
-            setMotDePasse(motDePasse);
-    
-            int changesNumber = communicationBD.insert("utilisateur", new String[]{"nom", "email", "mot_de_passe"}, new String[]{nom, email, motDePasse});
-            if(changesNumber > 0){
-                System.out.println("utilisateur ajouter a la table utilisateur");
-            }
-            else System.out.println("probleme lors du l ajout de l utilisateur a la table utilisateur");
+           
         }
          catch (UtilisateurNonTrouveException e) {
             System.out.println(e);

@@ -10,11 +10,10 @@ import com.projet.Utilisateur.Utilisateur;
 import com.projet.communicationBD.communicationBD;
 
 public class Formateur extends Utilisateur {
-    Vector<Formation> formations;
+    Vector<Formation> formations = new Vector<Formation>();
 
     public Formateur(String nom, String email, String motDePasse) throws SQLException{
         super(nom, email, motDePasse);
-
         
         ResultSet res = ConnectionBD.st.executeQuery("select id_user from utilisateur where email = '"+email+"'");
         res.next();

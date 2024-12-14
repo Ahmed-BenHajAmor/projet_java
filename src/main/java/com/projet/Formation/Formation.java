@@ -42,18 +42,19 @@ public class Formation {
         this.formateur = formateur;
         this.prix = prix;
 
-        formateur.ajouterFormation(this);
+        
         int formateurID;
         ResultSet res = ConnectionBD.st.executeQuery("select * from utilisateur where email = '"+formateur.email+"'");
         res.next();
         formateurID = res.getInt("id_user");
 
-        int changesNumber = communicationBD.insert("formation", new String[]{"titre", "discription", "formateur_id"}, new Object[]{titre, description, formateurID});
+        int changesNumber = communicationBD.insert("formation", new String[]{"titre", "discription", "formateur_id", "prix"}, new Object[]{titre, description, formateurID, prix});
         if(changesNumber > 0){
             System.out.println("formation added succefully");
         }else{
             System.out.println("formation ajout erreur");
         }
+        
     }
    
 
