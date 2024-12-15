@@ -8,9 +8,9 @@ import com.projet.Formateur.Formateur;
 import com.projet.communicationBD.communicationBD;
 
 public class Formation {
-    String titre;
-    String description;
-    Formateur formateur;
+    private String titre;
+    private String description;
+    private Formateur formateur;
     double prix;
     public String getTitre() {
         return titre;
