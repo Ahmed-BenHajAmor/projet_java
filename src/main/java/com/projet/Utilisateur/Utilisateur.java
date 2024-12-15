@@ -29,9 +29,9 @@ public class Utilisateur {
     public void setMotDePasse(String motDePasse) {
         this.motDePasse = motDePasse;
     }
-    public Utilisateur(String nom,String email,String motDePasse) throws SQLException{
-        ResultSet res = ConnectionBD.st.executeQuery("select * from utilisateur where email = '"+email+"'");
+    public Utilisateur(String nom,String email,String motDePasse){
         try {
+            ResultSet res = ConnectionBD.st.executeQuery("select * from utilisateur where email = '"+email+"'");
             if (!res.next()) {
                 setNom(nom);
                 setEmail(email);
@@ -50,6 +50,8 @@ public class Utilisateur {
                 throw new UtilisateurNonTrouveException();
             }
            
+        }catch(SQLException e){
+            System.out.println("erreur de connexion a la BD");
         }
          catch (UtilisateurNonTrouveException e) {
             System.out.println(e);

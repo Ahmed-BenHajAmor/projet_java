@@ -13,14 +13,18 @@ import com.projet.communicationBD.communicationBD;
 public class Etudiant extends Utilisateur {
     Vector<Formation> listFormation = new Vector<Formation>();
 
-    public Etudiant(String nom, String email, String motDePasse) throws SQLException{
+    public Etudiant(String nom, String email, String motDePasse) {
         super(nom, email, motDePasse);
-
-        ResultSet res = ConnectionBD.st.executeQuery("select id_user from utilisateur where email = '"+email+"'");
-        res.next();
-        int changesNumber = communicationBD.insert("etudiant", new String[]{"id_etudiant"}, new Object[]{res.getInt("id_user")} );
-        if(changesNumber > 0) System.out.println("etudiant ajouter a la table etudiant");
-        else System.out.println("probleme lors du l ajout de l etudiant a la table etudiant");
+        try {
+            ResultSet res = ConnectionBD.st.executeQuery("select id_user from utilisateur where email = '"+email+"'");
+            res.next();
+            int changesNumber = communicationBD.insert("etudiant", new String[]{"id_etudiant"}, new Object[]{res.getInt("id_user")} );
+            if(changesNumber > 0) System.out.println("etudiant ajouter a la table etudiant");
+            else System.out.println("probleme lors du l ajout de l etudiant a la table etudiant");
+        } catch (SQLException e) {
+            System.out.println("Probleme lors de la connexion du formateur");
+        }
+        
 
 
 
@@ -57,6 +61,8 @@ public class Etudiant extends Utilisateur {
             }
         } catch (FormationDejaInscriteException e){
             System.out.println(e);
+        } catch(SQLException e){
+            System.out.println("Probleme lors de l inscription du l etudiant");
         }
     }
 }

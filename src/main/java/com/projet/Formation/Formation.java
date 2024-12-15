@@ -36,24 +36,29 @@ public class Formation {
     public void setPrix(double prix) {
         this.prix = prix;
     }
-    public Formation(String titre, String description, Formateur formateur, double prix) throws SQLException {
+    public Formation(String titre, String description, Formateur formateur, double prix)  {
         this.titre = titre;
         this.description = description;
         this.formateur = formateur;
         this.prix = prix;
 
-        
-        int formateurID;
-        ResultSet res = ConnectionBD.st.executeQuery("select * from utilisateur where email = '"+formateur.email+"'");
-        res.next();
-        formateurID = res.getInt("id_user");
+        try {
+            int formateurID;
+            ResultSet res = ConnectionBD.st.executeQuery("select * from utilisateur where email = '"+formateur.email+"'");
+            res.next();
+            formateurID = res.getInt("id_user");
 
-        int changesNumber = communicationBD.insert("formation", new String[]{"titre", "discription", "formateur_id", "prix"}, new Object[]{titre, description, formateurID, prix});
-        if(changesNumber > 0){
-            System.out.println("formation added succefully");
-        }else{
-            System.out.println("formation ajout erreur");
+            int changesNumber = communicationBD.insert("formation", new String[]{"titre", "discription", "formateur_id", "prix"}, new Object[]{titre, description, formateurID, prix});
+            if(changesNumber > 0){
+                System.out.println("formation added succefully");
+            }else{
+                System.out.println("formation ajout erreur");
+            }
+            
+        } catch (SQLException e) {
+            System.out.println("Probleme lors de l ajout du formation");
         }
+        
         
     }
    
