@@ -48,7 +48,7 @@ public class Formation {
             res.next();
             formateurID = res.getInt("id_user");
 
-            int changesNumber = communicationBD.insert("formation", new String[]{"titre", "discription", "formateur_id", "prix"}, new Object[]{titre, description, formateurID, prix});
+            int changesNumber = communicationBD.insert("formation", new String[]{"titre", "description", "formateur_id", "prix"}, new Object[]{titre, description, formateurID, prix});
             if(changesNumber > 0){
                 System.out.println("formation added succefully");
             }else{
