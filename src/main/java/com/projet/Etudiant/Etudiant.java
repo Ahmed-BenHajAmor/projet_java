@@ -34,8 +34,13 @@ public class Etudiant extends Utilisateur {
         
 
     }
+<<<<<<< HEAD
     // Méthode pour inscrire l'étudiant à une formation
     public void sinscrireFormation(Formation formation) {
+=======
+
+    public void sinscrireFormation(Formation formation){
+>>>>>>> 1e07a181538bb2d6574ab031432a98fc23ed94c2
 
         try {
             // Vérifie si la formation est déjà inscrite ou n'est pas valide
