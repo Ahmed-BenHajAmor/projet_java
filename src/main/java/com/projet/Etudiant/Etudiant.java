@@ -12,7 +12,6 @@ import com.projet.communicationBD.communicationBD;
 
 public class Etudiant extends Utilisateur {
     Vector<Formation> listFormation = new Vector<Formation>();
-
     public Etudiant(String nom, String email, String motDePasse) throws SQLException{
         super(nom, email, motDePasse);
 
@@ -21,9 +20,6 @@ public class Etudiant extends Utilisateur {
         int changesNumber = communicationBD.insert("etudiant", new String[]{"id_etudiant"}, new Object[]{res.getInt("id_user")} );
         if(changesNumber > 0) System.out.println("etudiant ajouter a la table etudiant");
         else System.out.println("probleme lors du l ajout de l etudiant a la table etudiant");
-
-
-
 
     }
 
