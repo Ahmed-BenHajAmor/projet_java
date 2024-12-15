@@ -31,7 +31,7 @@ public class Etudiant extends Utilisateur {
 
     }
 
-    public void sinscrireFormation(Formation formation) throws SQLException{
+    public void sinscrireFormation(Formation formation){
 
         try {
             if (formation == null || listFormation.contains(formation)){
