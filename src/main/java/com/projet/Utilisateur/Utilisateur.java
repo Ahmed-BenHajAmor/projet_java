@@ -40,7 +40,7 @@ public class Utilisateur {
     public Utilisateur(String nom,String email,String motDePasse, String type){
         try {
             // Exécution d'une requête SQL pour vérifier si un utilisateur existe déjà avec cet email
-            ResultSet res = ConnectionBD.st.executeQuery("select * from utilisateur where email = '"+email+"'");
+            ResultSet res = ConnectionBD.st.executeQuery("select * from utilisateur where email = '"+email+"' and type = '"+type+"'");
             if(type != "formateur" && type != "etudiant") System.out.println("verifie les donnees");
             // Si l'utilisateur n'existe pas, on l'ajoute à la base de données
             else if (!res.next()) {

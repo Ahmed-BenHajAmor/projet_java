@@ -17,30 +17,14 @@ public class Etudiant extends Utilisateur {
     // Constructeur de la classe Etudiant
     public Etudiant(String nom, String email, String motDePasse){
         // Appel du constructeur de la classe parente (Utilisateur)
-        super(nom, email, motDePasse);
-        try {
-             // Récupère l'id de l'utilisateur (étudiant) à partir de l'email
-            ResultSet res = ConnectionBD.st.executeQuery("select id_user from utilisateur where email = '"+email+"'");
-            res.next();// Avancer le curseur pour récupérer les résultats
-            int changesNumber = communicationBD.insert("etudiant", new String[]{"id_etudiant"}, new Object[]{res.getInt("id_user")} );
-             
-             // Vérifie si l'insertion a réussi
-            if(changesNumber > 0) System.out.println("Etudiant est ajouté a la table etudiant");
-            else System.out.println("Probleme lors du l ajout de l etudiant a la table etudiant");
-        } catch (SQLException e) {
-            // Gestion des exceptions liées à la connexion ou à la requête SQL
-            System.out.println("Probleme lors de la connexion du formateur");
-        }
+        super(nom, email, motDePasse, "etudiant");
         
 
     }
-<<<<<<< HEAD
-    // Méthode pour inscrire l'étudiant à une formation
-    public void sinscrireFormation(Formation formation) {
-=======
 
+
+    // Méthode pour inscrire l'étudiant à une formation
     public void sinscrireFormation(Formation formation){
->>>>>>> 1e07a181538bb2d6574ab031432a98fc23ed94c2
 
         try {
             // Vérifie si la formation est déjà inscrite ou n'est pas valide
@@ -57,21 +41,27 @@ public class Etudiant extends Utilisateur {
             int formateurId;
 
             // Recherche l'ID du formateur en fonction de son email
-            ResultSet res = ConnectionBD.st.executeQuery("select id_user from utilisateur where email = '"+formation.getFormateur().email+"'");
+            ResultSet res = ConnectionBD.st.executeQuery("select id_user from utilisateur where email = '"+formation.getFormateur().email+"' and type = 'formateur'");
             res.next();
             formateurId = res.getInt("id_user");
             
             // Recherche l'ID de la formation en fonction du titre, de la description et de l'ID du formateur
-            res = ConnectionBD.st.executeQuery("select id_formation from formation where titre = '"+formation.getTitre()+"' and discription = '"+formation.getDescription()+"' and formateur_id = '"+formateurId+"'");
+            res = ConnectionBD.st.executeQuery("select id_formation from formation where titre = '"+formation.getTitre()+"' and description = '"+formation.getDescription()+"' and formateur_id = '"+formateurId+"'");
             res.next();
             idFormation = res.getInt("id_formation");
 
             // Recherche l'ID de l'étudiant à partir de son email
-            res = ConnectionBD.st.executeQuery("select id_user from utilisateur where email = '"+this.email+"'");
+            res = ConnectionBD.st.executeQuery("select id_user from utilisateur where email = '"+this.email+"' and type = 'etudiant'");
             res.next();
             idEtud = res.getInt("id_user");
 
+            // Vérification pour s'assurer que le formateur de la session n'est pas l'étudiant qu'on essaie d'inscrire.
+            if(formation.getFormateur().email == email){
+                throw new SQLException();
+            }
+
             // Insère l'association entre l'étudiant et la formation dans la table "assiste"
+            
             int changesNumber = communicationBD.insert("assiste", new String[]{"id_etudiant", "id_formation"}, new Object[]{idEtud, idFormation});
            
             // Vérifie si l'insertion a réussi
