@@ -38,6 +38,7 @@ public class Utilisateur {
     }
     // Constructeur de la classe Utilisateur
     public Utilisateur(String nom,String email,String motDePasse, String type){
+       
         try {
             // Exécution d'une requête SQL pour vérifier si un utilisateur existe déjà avec cet email
             ResultSet res = ConnectionBD.st.executeQuery("select * from utilisateur where email = '"+email+"' and type = '"+type+"'");
@@ -56,7 +57,7 @@ public class Utilisateur {
                 }
                 else System.out.println("probleme lors du l ajout de l "+type+" a la table utilisateur");
             // Si l'utilisateur existe déjà, on vérifie que le mot de passe correspond
-            }else if(res.getString("mot_de_passe") == motDePasse){
+            }else if(res.getString("mot_de_passe").equals(motDePasse)){
                 // Si le mot de passe correspond, on initialise l'utilisateur avec les données récupérées
                 setNom(nom);
                 setEmail(email);
@@ -69,7 +70,8 @@ public class Utilisateur {
            
         }catch(SQLException e){
             // Gestion des erreurs SQL
-            System.out.println("Erreur de connexion a la BD");
+            System.out.println("Erreur de communication avec la BD");
+            System.out.println(e);
         }
          catch (UtilisateurNonTrouveException e) {
             // Gestion de l'exception personnalisée lorsque l'utilisateur n'est pas trouvé ou que le mot de passe est incorrect

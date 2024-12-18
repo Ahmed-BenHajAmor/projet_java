@@ -12,7 +12,13 @@ import com.projet.communicationBD.communicationBD;
 
 public class Etudiant extends Utilisateur {
     // Liste des formations auxquelles l'étudiant est inscrit
-    Vector<Formation> listFormation = new Vector<Formation>();
+    private Vector<Formation> listFormation = new Vector<Formation>();
+
+    public Vector<Formation> getListFormation() {
+        return listFormation;
+    }
+
+
 
     // Constructeur de la classe Etudiant
     public Etudiant(String nom, String email, String motDePasse){
@@ -46,6 +52,7 @@ public class Etudiant extends Utilisateur {
             formateurId = res.getInt("id_user");
             
             // Recherche l'ID de la formation en fonction du titre, de la description et de l'ID du formateur
+
             res = ConnectionBD.st.executeQuery("select id_formation from formation where titre = '"+formation.getTitre()+"' and description = '"+formation.getDescription()+"' and formateur_id = '"+formateurId+"'");
             res.next();
             idFormation = res.getInt("id_formation");
@@ -54,6 +61,7 @@ public class Etudiant extends Utilisateur {
             res = ConnectionBD.st.executeQuery("select id_user from utilisateur where email = '"+this.email+"' and type = 'etudiant'");
             res.next();
             idEtud = res.getInt("id_user");
+
 
             // Vérification pour s'assurer que le formateur de la session n'est pas l'étudiant qu'on essaie d'inscrire.
             if(formation.getFormateur().email == email){
