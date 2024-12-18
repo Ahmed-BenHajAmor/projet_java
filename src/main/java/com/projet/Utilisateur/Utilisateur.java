@@ -36,31 +36,28 @@ public class Utilisateur {
     public void setMotDePasse(String motDePasse) {
         this.motDePasse = motDePasse;
     }
-
     // Constructeur de la classe Utilisateur
-    public Utilisateur(String nom,String email,String motDePasse){
+    public Utilisateur(String nom,String email,String motDePasse, String type){
+       
         try {
             // Exécution d'une requête SQL pour vérifier si un utilisateur existe déjà avec cet email
-            ResultSet res = ConnectionBD.st.executeQuery("select * from utilisateur where email = '"+email+"'");
-
+            ResultSet res = ConnectionBD.st.executeQuery("select * from utilisateur where email = '"+email+"' and type = '"+type+"'");
+            if(type != "formateur" && type != "etudiant") System.out.println("verifie les donnees");
             // Si l'utilisateur n'existe pas, on l'ajoute à la base de données
-            if (!res.next()) {
+            else if (!res.next()) {
                 // On définit les attributs de l'utilisateur avec les valeurs passées en paramètres
                 setNom(nom);
                 setEmail(email);
                 setMotDePasse(motDePasse);
-
                 // Insertion des données de l'utilisateur dans la table "utilisateur"
-                int changesNumber = communicationBD.insert("utilisateur", new String[]{"nom", "email", "mot_de_passe"}, new String[]{nom, email, motDePasse});
-                
-                // Vérification de l'insertion dans la base de données
+                int changesNumber = communicationBD.insert("utilisateur", new String[]{"nom", "email", "mot_de_passe", "type"}, new String[]{nom, email, motDePasse, type});
+                // Vérification de l'insertion
                 if(changesNumber > 0){
-                    System.out.println("Utilisateur est ajouté avec succés");
+                    System.out.println(type + " ajouter a la table utilisateur");
                 }
-                else System.out.println("Probleme lors du l'ajout de l'utilisateur");
-
+                else System.out.println("probleme lors du l ajout de l "+type+" a la table utilisateur");
             // Si l'utilisateur existe déjà, on vérifie que le mot de passe correspond
-            }else if(res.getString("mot_de_passe") == motDePasse){
+            }else if(res.getString("mot_de_passe").equals(motDePasse)){
                 // Si le mot de passe correspond, on initialise l'utilisateur avec les données récupérées
                 setNom(nom);
                 setEmail(email);
@@ -73,7 +70,8 @@ public class Utilisateur {
            
         }catch(SQLException e){
             // Gestion des erreurs SQL
-            System.out.println("Erreur de connexion a la BD");
+            System.out.println("Erreur de communication avec la BD");
+            System.out.println(e);
         }
          catch (UtilisateurNonTrouveException e) {
             // Gestion de l'exception personnalisée lorsque l'utilisateur n'est pas trouvé ou que le mot de passe est incorrect
